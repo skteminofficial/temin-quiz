@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ms">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Akses Guru • TEMIN Kuiz</title><link rel="stylesheet" href="css/style.css"></head>
+<body>
+<main class="narrow">
+<a class="back" href="index.html">← Laman Utama</a>
+<section class="login-card">
+  <div class="lock">🔐</div>
+  <span class="badge dark">MOD GURU</span>
+  <h1>Akses Guru</h1>
+  <p>Masukkan PIN guru untuk membuka pengurusan TEMIN Kuiz.</p>
+  <form id="pinForm">
+    <label for="pin">PIN Guru</label>
+    <input id="pin" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="••••">
+    <button class="primary-btn" type="submit">Masuk →</button>
+  </form>
+  <p id="pinMessage" class="form-message"></p>
+  <small class="security-note">🔒 PIN sebenar akan disahkan melalui backend apabila sistem pusat disambungkan.</small>
+</section>
+</main>
+<script src="js/login.js"></script>
+</body></html>
