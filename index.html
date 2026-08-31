@@ -1,20 +1,63 @@
 <!doctype html>
 <html lang="ms">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#173f73">
-<title>TEMIN Kuiz</title><link rel="stylesheet" href="css/style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#5b45e8">
+<title>TEMIN Kuiz</title>
+<link rel="stylesheet" href="css/style.css">
 </head>
-<body><main class="shell">
-<header class="hero">
-<div class="logo-wrap"><img src="https://raw.githubusercontent.com/skteminofficial/assets/main/logos/logo-sk-temin.png" alt="Logo SK Temin"></div>
-<div><p class="eyebrow">SK TEMIN • TEMIN SMART HUB</p><h1>TEMIN Kuiz</h1><p class="tagline">Belajar • Bermain • Kuasai</p></div>
-</header>
-<section class="intro"><span class="pill">Build 001</span><h2>Pilih cara untuk masuk</h2><p>Portal kuiz pembelajaran SK Temin untuk murid dan guru dalam satu tempat.</p></section>
-<section class="role-grid">
-<a class="role-card student" href="student.html"><div class="icon">🧑‍🎓</div><div><small>MURID</small><h3>Belajar & Sertai Kuiz</h3><p>Belajar sendiri atau masuk sesi kelas menggunakan kod guru.</p><span class="action">Masuk sebagai Murid →</span></div></a>
-<a class="role-card teacher" href="teacher.html"><div class="icon">👨‍🏫</div><div><small>GURU</small><h3>Urus & Jalankan Kuiz</h3><p>Cipta sesi, urus bank kuiz dan pantau pembelajaran murid.</p><span class="action">Masuk sebagai Guru →</span></div></a>
-</section>
-<section class="notice"><strong>✨ Satu portal, semua subjek.</strong><span>Kuiz yang diterbitkan guru nanti akan tersedia di sini secara berpusat.</span></section>
-<footer><b>SEKOLAH KEBANGSAAN TEMIN</b><span>CBA2050 • The More You Do, The More You Get</span></footer>
-</main><script src="js/app.js"></script></body></html>
+<body class="home">
+<div class="float f1">★</div><div class="float f2">?</div><div class="float f3">⚡</div><div class="float f4">+</div>
+<main class="wrap">
+  <nav class="topbar">
+    <a class="brand" href="index.html">
+      <img src="https://raw.githubusercontent.com/skteminofficial/assets/main/logos/logo-sk-temin.png" alt="Logo SK Temin">
+      <span><b>TEMIN</b><small>KUIZ</small></span>
+    </a>
+    <a class="teacher-link" href="teacher-login.html">👨‍🏫 Guru</a>
+  </nav>
+
+  <section class="hero-home">
+    <div class="hero-copy">
+      <span class="badge">🎮 LEARN • PLAY • GROW</span>
+      <h1>Jom main.<br><em>Jom kuasai!</em></h1>
+      <p class="lead">Belajar ikut cara kamu. Cuba, ulang dan naikkan penguasaan satu demi satu.</p>
+      <div class="motto">✨ The More You Do, <strong>The More You Get.</strong></div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="orb">
+        <div class="brain">🧠</div>
+        <span class="star s1">⭐</span><span class="star s2">⭐</span>
+        <span class="bolt">⚡</span><span class="target">🎯</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="play-grid">
+    <a class="play-card self" href="student.html?mode=self">
+      <div class="play-icon">🚀</div>
+      <div><span class="mini">BELAJAR IKUT RENTAK SENDIRI</span><h2>Belajar Sendiri</h2>
+      <p>Pilih tahun, subjek dan topik. Cuba sebanyak mana yang kamu mahu.</p>
+      <b>MULA SEKARANG <span>→</span></b></div>
+    </a>
+
+    <a class="play-card live" href="student.html?mode=live">
+      <div class="play-icon">⚡</div>
+      <div><span class="mini">GURU SEDANG JALANKAN KUIZ?</span><h2>Masuk Kelas</h2>
+      <p>Ada kod daripada guru? Masuk dan sertai kuiz kelas bersama kawan-kawan.</p>
+      <b>MASUK KOD <span>→</span></b></div>
+    </a>
+  </section>
+
+  <section class="rewards">
+    <div><span>⭐</span><b>Kumpul Bintang</b><small>Teruskan latihan</small></div>
+    <div><span>🔥</span><b>Bina Streak</b><small>Konsisten belajar</small></div>
+    <div><span>🏆</span><b>Capai Penguasaan</b><small>Cabar diri sendiri</small></div>
+  </section>
+
+  <footer><b>SEKOLAH KEBANGSAAN TEMIN</b><span>CBA2050</span></footer>
+</main>
+<script src="js/app.js"></script>
+</body>
+</html>
