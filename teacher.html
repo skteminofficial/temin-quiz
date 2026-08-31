@@ -18,10 +18,10 @@
 <section class="quick-card">
 <form id="quickForm">
   <div class="form-grid">
-    <label>Subjek<select required><option value="">Pilih subjek</option><option>Bahasa Melayu</option><option>Bahasa Inggeris</option><option>Matematik</option><option>Sains</option><option>Pendidikan Islam</option><option>Bahasa Arab</option><option>Sejarah</option><option>RBT</option></select></label>
-    <label>Tahun<select required><option value="">Pilih tahun</option><option>Tahun 1</option><option>Tahun 2</option><option>Tahun 3</option><option>Tahun 4</option><option>Tahun 5</option><option>Tahun 6</option></select></label>
-    <label class="wide">Topik / Unit<input required placeholder="Contoh: Masa dan Waktu"></label>
-    <label>Bilangan Soalan<select><option>10</option><option selected>15</option><option>20</option><option>25</option><option>30</option></select></label>
+    <label>Subjek<select id="subject" required><option value="">Memuatkan...</option></select></label>
+    <label>Tahun<select id="year" required><option value="">Memuatkan...</option></select></label>
+    <label class="wide">Topik / Unit<input id="topic" required placeholder="Contoh: Masa dan Waktu"></label>
+    <label>Bilangan Soalan<select id="questionCount"><option>10</option><option selected>15</option><option>20</option><option>25</option><option>30</option></select></label>
   </div>
   <button class="generate" type="submit">⚡ JANA KUIZ CEPAT</button>
   <button class="advanced" type="button" id="advanced">⚙ Tetapan Lanjut <span>▾</span></button>
@@ -38,5 +38,6 @@
  <button><span>🎮</span><b>Mulakan Sesi</b><small>Jana kod kelas</small></button>
 </section>
 </main>
+<script src="js/config.js"></script>
 <script src="js/teacher.js"></script>
 </body></html>
