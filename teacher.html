@@ -1,13 +1,42 @@
 <!doctype html>
-<html lang="ms"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#173f73"><title>Guru • TEMIN Kuiz</title><link rel="stylesheet" href="css/style.css"></head>
-<body><main class="shell"><a class="back" href="index.html">← Kembali</a>
-<header class="page-head"><span class="big-icon">👨‍🏫</span><div><p class="eyebrow">MOD GURU</p><h1>Pusat Pengurusan Kuiz</h1><p>Cipta, terbitkan dan urus kuiz untuk murid tanpa perlu fikir tentang prompt atau backend.</p></div></header>
-<section class="teacher-grid">
-<button class="tool-card" data-tool="create"><span>✨</span><b>Cipta Kuiz</b><small>Jana kuiz baharu ikut subjek, tahun dan topik.</small></button>
-<button class="tool-card" data-tool="mine"><span>📁</span><b>Kuiz Saya</b><small>Lihat kuiz yang pernah dicipta dan diterbitkan.</small></button>
-<button class="tool-card" data-tool="bank"><span>🏫</span><b>Bank Sekolah</b><small>Guna semula atau duplicate kuiz guru lain.</small></button>
-<button class="tool-card" data-tool="live"><span>🎮</span><b>Mulakan Sesi</b><small>Jalankan kuiz kelas dan jana kod untuk murid.</small></button>
+<html lang="ms">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Guru • TEMIN Kuiz</title><link rel="stylesheet" href="css/style.css"></head>
+<body>
+<main class="wrap dashboard">
+<nav class="topbar">
+  <a class="brand" href="index.html"><img src="https://raw.githubusercontent.com/skteminofficial/assets/main/logos/logo-sk-temin.png" alt=""><span><b>TEMIN</b><small>KUIZ • GURU</small></span></a>
+  <button class="ghost-btn" id="logout">Keluar</button>
+</nav>
+
+<section class="teacher-hero">
+  <div><span class="badge">✨ MODE MUDAH</span><h1>Jana Kuiz Cepat</h1>
+  <p>Pilih apa yang diperlukan. TEMIN akan urus selebihnya.</p></div>
+  <div class="magic">⚡</div>
 </section>
-<section class="status-card"><div><span class="status-dot"></span><b>Frontend Build 001 aktif</b></div><p>Backend pusat, bank kuiz dan live dashboard akan disambungkan dalam build seterusnya.</p></section>
-<p id="teacherMessage" class="message center" aria-live="polite"></p></main><script src="js/teacher.js"></script></body></html>
+
+<section class="quick-card">
+<form id="quickForm">
+  <div class="form-grid">
+    <label>Subjek<select required><option value="">Pilih subjek</option><option>Bahasa Melayu</option><option>Bahasa Inggeris</option><option>Matematik</option><option>Sains</option><option>Pendidikan Islam</option><option>Bahasa Arab</option><option>Sejarah</option><option>RBT</option></select></label>
+    <label>Tahun<select required><option value="">Pilih tahun</option><option>Tahun 1</option><option>Tahun 2</option><option>Tahun 3</option><option>Tahun 4</option><option>Tahun 5</option><option>Tahun 6</option></select></label>
+    <label class="wide">Topik / Unit<input required placeholder="Contoh: Masa dan Waktu"></label>
+    <label>Bilangan Soalan<select><option>10</option><option selected>15</option><option>20</option><option>25</option><option>30</option></select></label>
+  </div>
+  <button class="generate" type="submit">⚡ JANA KUIZ CEPAT</button>
+  <button class="advanced" type="button" id="advanced">⚙ Tetapan Lanjut <span>▾</span></button>
+  <div id="advancedPanel" class="advanced-panel hidden">
+    <p>Build seterusnya: aras, mod, timer, shuffle dan tema akan tersedia di sini tanpa mengganggu Mode Mudah.</p>
+  </div>
+</form>
+<p id="teacherMessage" class="form-message center"></p>
+</section>
+
+<section class="shortcut-grid">
+ <button><span>📁</span><b>Kuiz Saya</b><small>Kuiz yang pernah dijana</small></button>
+ <button><span>🏫</span><b>Bank Sekolah</b><small>Guna semula kuiz tersedia</small></button>
+ <button><span>🎮</span><b>Mulakan Sesi</b><small>Jana kod kelas</small></button>
+</section>
+</main>
+<script src="js/teacher.js"></script>
+</body></html>
