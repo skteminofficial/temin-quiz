@@ -1,0 +1,39 @@
+
+/* Build 002.3.1 — Curriculum Source + Teacher Profile */
+.teacher-actions{display:flex;align-items:center;gap:9px}
+.teacher-chip{display:inline-flex;align-items:center;padding:9px 12px;border-radius:999px;background:#ebe8ff;color:var(--purple);font-size:.78rem;font-weight:900}
+.profile-card{margin-top:18px;background:linear-gradient(135deg,#fff,#f4f1ff);border:2px solid #ddd7ff;border-radius:25px;padding:22px;box-shadow:var(--shadow);display:grid;grid-template-columns:auto 1fr minmax(260px,360px);gap:18px;align-items:center}
+.profile-icon{width:62px;height:62px;border-radius:20px;display:grid;place-items:center;font-size:2rem;background:#ebe8ff}
+.profile-copy small{font-size:.68rem;font-weight:900;letter-spacing:.09em;color:var(--purple)}
+.profile-copy h2{font-family:"Baloo 2";font-size:1.65rem;margin:2px 0}
+.profile-copy p{margin:0;color:var(--muted);font-size:.88rem}
+.profile-card form{display:grid;grid-template-columns:1fr auto;gap:8px}
+.profile-card form .primary-btn{width:auto;margin:0;padding-inline:18px}
+.profile-card input{margin:0}
+.profile-card .form-message{grid-column:1/-1;margin:0}
+
+.source-status{margin:17px 0 3px;border-radius:17px;padding:14px 15px;display:flex;align-items:center;justify-content:space-between;gap:14px;border:1px solid var(--line);transition:.2s}
+.source-status>div{display:grid;gap:2px}
+.source-status b{font-size:.86rem}
+.source-status span{font-size:.83rem}
+.source-idle{background:#f7f8fc;color:var(--muted)}
+.source-loading{background:#fff9dc;border-color:#f1df86;color:#715e00}
+.source-success{background:#eafbf3;border-color:#b8efd3;color:#14764b}
+.source-error{background:#fff0f2;border-color:#ffc7d0;color:#b93f56}
+.source-toggle{border:0;border-radius:999px;background:#fff;padding:8px 11px;font-size:.75rem;font-weight:900;color:inherit;cursor:pointer;box-shadow:0 3px 10px rgba(30,35,70,.07)}
+.source-details{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:9px 0 4px}
+.source-details a{display:flex;justify-content:center;align-items:center;padding:12px;border-radius:14px;background:#f8f8ff;border:1px solid var(--line);font-size:.82rem;font-weight:900;color:var(--purple)}
+.disabled-link{pointer-events:none;opacity:.45}
+
+@media(max-width:760px){
+  .profile-card{grid-template-columns:auto 1fr}
+  .profile-card form{grid-column:1/-1}
+}
+@media(max-width:520px){
+  .teacher-chip{display:none}
+  .profile-card{grid-template-columns:1fr;text-align:center}
+  .profile-icon{margin:auto}
+  .profile-card form{grid-template-columns:1fr}
+  .source-status{align-items:flex-start}
+  .source-details{grid-template-columns:1fr}
+}
