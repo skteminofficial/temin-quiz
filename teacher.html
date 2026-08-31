@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="ms">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Guru • TEMIN Kuiz</title><link rel="stylesheet" href="css/style.css"></head>
+<title>Guru • TEMIN Kuiz</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/teacher-002.3.1.css"></head>
 <body>
 <main class="wrap dashboard">
 <nav class="topbar">
   <a class="brand" href="index.html"><img src="https://raw.githubusercontent.com/skteminofficial/assets/main/logos/logo-sk-temin.png" alt=""><span><b>TEMIN</b><small>KUIZ • GURU</small></span></a>
-  <button class="ghost-btn" id="logout">Keluar</button>
+  <div class="teacher-actions"><span id="teacherChip" class="teacher-chip hidden"></span><button class="ghost-btn" id="logout">Keluar</button></div>
 </nav>
 
 <section class="teacher-hero">
@@ -15,18 +15,67 @@
   <div class="magic">⚡</div>
 </section>
 
+<section id="teacherProfileCard" class="profile-card hidden">
+  <div class="profile-icon">👩‍🏫</div>
+  <div class="profile-copy">
+    <small>SETUP SEKALI SAHAJA</small>
+    <h2>Siapa cikgu?</h2>
+    <p>Masukkan nama. TEMIN akan ingat profil ini pada peranti ini.</p>
+  </div>
+  <form id="teacherProfileForm">
+    <input id="teacherName" placeholder="Contoh: Cikgu Syah" autocomplete="name" required>
+    <button class="primary-btn" type="submit">SIMPAN PROFIL</button>
+  </form>
+  <p id="profileMessage" class="form-message center"></p>
+</section>
+
 <section class="quick-card">
 <form id="quickForm">
   <div class="form-grid">
     <label>Subjek<select id="subject" required><option value="">Memuatkan...</option></select></label>
     <label>Tahun<select id="year" required><option value="">Memuatkan...</option></select></label>
-    <label class="wide">Topik / Unit<input id="topic" required placeholder="Contoh: Masa dan Waktu"></label>
-    <label>Bilangan Soalan<select id="questionCount"><option>10</option><option selected>15</option><option>20</option><option>25</option><option>30</option></select></label>
   </div>
+
+  <div id="sourceStatus" class="source-status source-idle">
+    <div>
+      <b>📚 Sumber rasmi</b>
+      <span id="sourceStatusText">Pilih Subjek + Tahun dahulu.</span>
+    </div>
+    <button type="button" id="sourceToggle" class="source-toggle hidden">Lihat sumber</button>
+  </div>
+
+  <div id="sourceDetails" class="source-details hidden">
+    <a id="textbookLink" href="#" target="_blank" rel="noopener">📘 Buku Teks</a>
+    <a id="dskpLink" href="#" target="_blank" rel="noopener">📗 DSKP</a>
+  </div>
+
+  <div class="form-grid">
+    <label class="wide">Skop Kuiz
+      <select id="scope">
+        <option value="TOPIC" selected>Topik / Unit tertentu</option>
+        <option value="WHOLE_BOOK">Semua topik dalam buku teks</option>
+      </select>
+    </label>
+
+    <label id="topicWrap" class="wide">Topik / Unit
+      <input id="topic" required placeholder="Contoh: Masa dan Waktu">
+    </label>
+
+    <label id="questionCountWrap">Bilangan Soalan
+      <select id="questionCount"><option>10</option><option selected>15</option><option>20</option><option>25</option><option>30</option></select>
+    </label>
+
+    <label id="questionsPerTopicWrap" class="hidden">Soalan setiap topik
+      <select id="questionsPerTopic">
+        <option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="AUTO" selected>Auto</option>
+      </select>
+    </label>
+  </div>
+
   <button class="generate" type="submit">⚡ JANA KUIZ CEPAT</button>
   <button class="advanced" type="button" id="advanced">⚙ Tetapan Lanjut <span>▾</span></button>
   <div id="advancedPanel" class="advanced-panel hidden">
-    <p>Build seterusnya: aras, mod, timer, shuffle dan tema akan tersedia di sini tanpa mengganggu Mode Mudah.</p>
+    <p>Aras, mod, timer, shuffle, tema dan pengayaan akan masuk di sini tanpa mengganggu Mode Mudah.</p>
   </div>
 </form>
 <p id="teacherMessage" class="form-message center"></p>
