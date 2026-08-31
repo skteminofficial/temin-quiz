@@ -1,12 +1,30 @@
 <!doctype html>
-<html lang="ms"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#173f73"><title>Murid • TEMIN Kuiz</title><link rel="stylesheet" href="css/style.css"></head>
-<body><main class="shell"><a class="back" href="index.html">← Kembali</a>
-<header class="page-head"><span class="big-icon">🧑‍🎓</span><div><p class="eyebrow">MOD MURID</p><h1>Jom Belajar!</h1><p>Pilih belajar sendiri atau sertai sesi yang sedang dijalankan guru.</p></div></header>
-<section class="choice-grid">
-<article class="panel"><span class="panel-icon">📚</span><h2>Self Learning</h2><p>Pilih tahun, subjek dan topik. Belajar ikut kelajuan sendiri.</p><button class="btn primary" data-demo="self">Mula Belajar</button></article>
-<article class="panel highlight"><span class="panel-icon">🎮</span><h2>Masuk Kod Kelas</h2><p>Masukkan kod sesi yang diberi oleh guru.</p>
-<form id="joinForm"><label for="classCode">Kod Kelas</label><input id="classCode" name="classCode" autocomplete="off" maxlength="12" placeholder="Contoh: TEMIN-6284"><button class="btn accent" type="submit">Masuk Sesi</button></form>
-<p id="joinMessage" class="message" aria-live="polite"></p></article></section>
-<section class="mini-note"><b>Build 001:</b> paparan asas sudah siap. Sambungan sesi sebenar akan menggunakan Apps Script + Google Sheets.</section>
-</main><script src="js/student.js"></script></body></html>
+<html lang="ms">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Murid • TEMIN Kuiz</title><link rel="stylesheet" href="css/style.css"></head>
+<body>
+<main class="wrap student-page">
+<a class="back" href="index.html">← Kembali</a>
+<section class="student-head"><span>🎮</span><div><small>TEMIN KUIZ</small><h1 id="studentTitle">Jom Belajar!</h1><p id="studentIntro">Pilih cara kamu mahu belajar hari ini.</p></div></section>
+
+<section id="selfPanel" class="student-panel">
+ <div class="panel-title"><span>🚀</span><div><small>SELF LEARNING</small><h2>Belajar Sendiri</h2></div></div>
+ <div class="form-grid">
+  <label>Tahun<select><option>Tahun 1</option><option>Tahun 2</option><option>Tahun 3</option><option>Tahun 4</option><option>Tahun 5</option><option>Tahun 6</option></select></label>
+  <label>Subjek<select><option>Matematik</option><option>Bahasa Melayu</option><option>Bahasa Inggeris</option><option>Sains</option><option>Pendidikan Islam</option><option>Bahasa Arab</option></select></label>
+ </div>
+ <button class="generate demo">🚀 PILIH KUIZ</button>
+</section>
+
+<section id="livePanel" class="student-panel live-panel">
+ <div class="panel-title"><span>⚡</span><div><small>LIVE CLASS</small><h2>Masuk Kelas</h2></div></div>
+ <form id="joinForm">
+  <label>Kod Kelas<input id="classCode" maxlength="12" autocomplete="off" placeholder="TEMIN-6284"></label>
+  <button class="generate yellow" type="submit">⚡ MASUK KELAS</button>
+ </form>
+ <p id="joinMessage" class="form-message"></p>
+</section>
+<div class="student-motto">✨ The More You Do, <b>The More You Get.</b></div>
+</main>
+<script src="js/student.js"></script>
+</body></html>
