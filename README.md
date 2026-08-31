@@ -1,14 +1,21 @@
-# TEMIN Kuiz — Build 001
+# TEMIN Kuiz — Build 002.1
 
-Frontend asas portal kuiz berpusat SK Temin.
+Frontend ↔ Backend connection.
 
-## Kandungan
-- index.html
-- student.html
-- teacher.html
-- css/style.css
-- js/app.js
-- js/student.js
-- js/teacher.js
+## Aktif dalam build ini
+- PIN Guru disahkan melalui Apps Script backend.
+- PIN 2050 tidak lagi ditulis dalam login.js.
+- Senarai subjek/tahun dimuatkan dari endpoint `config`.
+- 11 subjek rasmi TEMIN Kuiz digunakan.
+- `Jana Kuiz Cepat` kini mencipta rekod DRAFT sebenar dalam tab QUIZZES.
+- Kod kelas boleh disemak terhadap sesi sebenar dalam backend.
+- UI Build 001.2 dan footer Unit ICT SK Temin • Sir Syah dikekalkan.
 
-Backend Apps Script + Google Sheets akan disambungkan dalam build seterusnya.
+## Belum dalam build ini
+- AI belum menjana soalan sebenar.
+- Self Learning bank belum aktif.
+- Pendaftaran murid/live gameplay belum aktif.
+- Create Session belum disambungkan ke butang UI.
+
+Backend: Build 002
+Frontend: Build 002.1
