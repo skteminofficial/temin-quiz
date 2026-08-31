@@ -5,3 +5,5 @@
 .site-footer{display:grid;gap:5px;text-align:center;padding-top:32px;color:var(--muted)}
 .site-footer div{display:flex;justify-content:center;gap:7px;flex-wrap:wrap}
 .site-footer small{font-size:.72rem;font-weight:800;letter-spacing:.035em;color:#8e94aa}
+
+button:disabled{opacity:.62;cursor:wait;transform:none!important}
