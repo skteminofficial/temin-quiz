@@ -5,8 +5,8 @@ const msg=document.getElementById('teacherMessage');
 const profileMsg=document.getElementById('profileMessage');
 const subject=document.getElementById('subject');
 const year=document.getElementById('year');
-const scope=document.getElementById('scope');
 const topic=document.getElementById('topic');
+const manualTopic=document.getElementById('manualTopic');
 const form=document.getElementById('quickForm');
 const sourceStatus=document.getElementById('sourceStatus');
 const sourceStatusText=document.getElementById('sourceStatusText');
@@ -32,9 +32,9 @@ sourceToggle?.addEventListener('click',()=>{
   sourceToggle.textContent=sourceDetails.classList.contains('hidden')?'Lihat sumber':'Sembunyikan';
 });
 
-scope?.addEventListener('change',syncScopeUI);
-subject?.addEventListener('change',loadCurriculumSource);
-year?.addEventListener('change',loadCurriculumSource);
+subject?.addEventListener('change',selectionChanged);
+year?.addEventListener('change',selectionChanged);
+topic?.addEventListener('change',syncTopicUI);
 
 document.getElementById('teacherProfileForm')?.addEventListener('submit',async e=>{
   e.preventDefault();
@@ -112,13 +112,42 @@ function setSourceState(state,text){
   sourceStatusText.textContent=text;
 }
 
-function syncScopeUI(){
-  const whole=scope.value==='WHOLE_BOOK';
-  document.getElementById('topicWrap').classList.toggle('hidden',whole);
+async function selectionChanged(){
+  await Promise.all([loadCurriculumSource(),loadTopics()]);
+}
+
+async function loadTopics(){
+  topic.disabled=true;
+  topic.innerHTML='<option value="">Memuatkan Unit / Topik...</option>';
+  document.getElementById('manualTopicWrap').classList.add('hidden');
+  if(!subject.value||!year.value){
+    topic.innerHTML='<option value="">Pilih Subjek + Tahun dahulu</option>';
+    return;
+  }
+  try{
+    const url=cfg.backendUrl+'?action=topics&year='+encodeURIComponent(year.value)+'&subject='+encodeURIComponent(subject.value);
+    const res=await fetch(url);
+    const data=await res.json();
+    if(!data.ok||!Array.isArray(data.topics)||!data.topics.length) throw new Error('TOPICS_NOT_READY');
+    topic.innerHTML='<option value="">Pilih Unit / Topik</option>'+
+      '<option value="__ALL__">📚 SEMUA UNIT / SELURUH BUKU</option>'+
+      data.topics.map(t=>`<option value="${escapeHtml(t.topicName)}">Unit ${escapeHtml(t.unitNo)} — ${escapeHtml(t.topicName)}</option>`).join('')+
+      '<option value="__OTHER__">✏️ Topik lain...</option>';
+    topic.disabled=false;
+  }catch(err){
+    topic.innerHTML='<option value="">Senarai topik belum tersedia</option><option value="__OTHER__">✏️ Taip topik sendiri sementara</option>';
+    topic.disabled=false;
+  }
+  syncTopicUI();
+}
+
+function syncTopicUI(){
+  const whole=topic.value==='__ALL__';
+  const other=topic.value==='__OTHER__';
+  document.getElementById('manualTopicWrap').classList.toggle('hidden',!other);
   document.getElementById('questionCountWrap').classList.toggle('hidden',whole);
   document.getElementById('questionsPerTopicWrap').classList.toggle('hidden',!whole);
-  topic.required=!whole;
-  if(whole) topic.value='';
+  manualTopic.required=other;
 }
 
 form?.addEventListener('submit',async e=>{
@@ -136,15 +165,17 @@ form?.addEventListener('submit',async e=>{
     return;
   }
 
-  const wholeBook=scope.value==='WHOLE_BOOK';
+  const wholeBook=topic.value==='__ALL__';
+  const manual=topic.value==='__OTHER__';
+  const selectedTopic=manual?manualTopic.value.trim():topic.value;
   const button=form.querySelector('.generate');
   const payload={
     action:'createQuiz',
     teacherId:teacherProfile.teacherId,
     subject:subject.value,
     year:year.value,
-    scope:scope.value,
-    topic:wholeBook?'':topic.value.trim(),
+    scope:wholeBook?'WHOLE_BOOK':'TOPIC',
+    topic:wholeBook?'':selectedTopic,
     questionCount:wholeBook?0:Number(document.getElementById('questionCount').value),
     questionsPerTopic:wholeBook?document.getElementById('questionsPerTopic').value:'',
     mode:'SMART',
@@ -171,7 +202,7 @@ form?.addEventListener('submit',async e=>{
     msg.textContent='Kuiz belum dapat disimpan. Cuba lagi.';
   }finally{
     button.disabled=false;
-    button.textContent='⚡ JANA KUIZ CEPAT';
+    button.textContent='✨ JANA KUIZ';
   }
 });
 
@@ -210,5 +241,4 @@ function escapeHtml(v){
 }
 
 applyTeacherProfile();
-syncScopeUI();
 loadConfig();
