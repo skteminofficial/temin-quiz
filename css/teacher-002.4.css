@@ -1,0 +1,4 @@
+/* Build 002.4 Topic Master */
+#topic:disabled{opacity:.68;cursor:wait}
+#manualTopicWrap{animation:topicIn .18s ease-out}
+@keyframes topicIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
