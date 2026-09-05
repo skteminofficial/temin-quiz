@@ -167,12 +167,47 @@ async function saveQuestionCard(questionId,verify){
 }
 function updateVerifyCount(){const done=activeQuestions.filter(q=>String(q.reviewStatus)==='VERIFIED').length;verifyCount.textContent=`${done}/${activeQuestions.length} soalan disahkan`;publishQuizBtn.disabled=!activeQuestions.length;}
 publishQuizBtn?.addEventListener('click',async()=>{
-  if(!activeQuiz?.quizId)return;const verified=activeQuestions.filter(q=>String(q.reviewStatus)==='VERIFIED').length;
-  if(verified<activeQuestions.length&&!confirm(`${activeQuestions.length-verified} soalan belum ditanda Guru Sahkan. Teruskan terbitkan kuiz ini?`))return;
-  publishQuizBtn.disabled=true;publishQuizBtn.textContent='MENERBITKAN...';
-  try{const res=await post({action:'publishQuiz',quizId:activeQuiz.quizId});if(!res.ok)throw new Error(res.error||'PUBLISH_FAILED');activeQuiz=res.quiz||activeQuiz;msg.innerHTML=`🎉 <b>Kuiz ${escapeHtml(activeQuiz.quizId)} telah diterbitkan.</b>`;previewSection.scrollIntoView({behavior:'smooth',block:'start'});}
-  catch(err){msg.textContent=humanError(err.message);}
-  finally{publishQuizBtn.disabled=false;publishQuizBtn.textContent='✅ SAHKAN & TERBITKAN';}
+  if(!activeQuiz?.quizId){msg.textContent='⚠️ Quiz ID tidak ditemui. Buka semula draf kuiz.';return;}
+  if(!activeQuestions.length){msg.textContent='⚠️ Tiada soalan untuk diterbitkan.';return;}
+
+  const remaining=activeQuestions.filter(q=>String(q.reviewStatus)!=='VERIFIED');
+  const promptText=remaining.length
+    ? `TEMIN akan menandakan ${remaining.length} soalan yang belum disahkan sebagai "Disahkan Guru" dan kemudian menerbitkan kuiz ini. Teruskan?`
+    : 'Semua soalan telah disahkan. Terbitkan kuiz ini sekarang?';
+  if(!confirm(promptText))return;
+
+  publishQuizBtn.disabled=true;
+  const oldText=publishQuizBtn.textContent;
+
+  try{
+    if(remaining.length){
+      let done=0;
+      for(const q of remaining){
+        publishQuizBtn.textContent=`✅ MENGESAHKAN ${done+1}/${remaining.length}...`;
+        const verifyRes=await post({action:'updateQuestion',questionId:q.questionId,reviewStatus:'VERIFIED'});
+        if(!verifyRes.ok)throw new Error(verifyRes.error||'VERIFY_FAILED');
+        const idx=activeQuestions.findIndex(x=>x.questionId===q.questionId);
+        if(idx>=0)activeQuestions[idx]=verifyRes.question;
+        done++;
+        verifyCount.textContent=`${activeQuestions.filter(x=>String(x.reviewStatus)==='VERIFIED').length}/${activeQuestions.length} soalan disahkan`;
+      }
+    }
+
+    publishQuizBtn.textContent='🚀 MENERBITKAN...';
+    const res=await post({action:'publishQuiz',quizId:activeQuiz.quizId});
+    if(!res.ok)throw new Error(res.error||'PUBLISH_FAILED');
+
+    activeQuiz=res.quiz||activeQuiz;
+    renderPreview(activeQuiz,activeQuestions);
+    msg.innerHTML=`🎉 <b>Kuiz ${escapeHtml(activeQuiz.quizId)} berjaya disahkan dan diterbitkan.</b>`;
+    previewSection.scrollIntoView({behavior:'smooth',block:'start'});
+  }catch(err){
+    console.error('Publish:',err);
+    msg.textContent=humanError(err.message||'PUBLISH_FAILED');
+  }finally{
+    publishQuizBtn.disabled=false;
+    publishQuizBtn.textContent=oldText||'✅ SAHKAN & TERBITKAN';
+  }
 });
 
 document.querySelectorAll('.shortcut-grid button').forEach(b=>b.addEventListener('click',()=>alert('Modul ini akan diaktifkan selepas Quiz Engine disambungkan.')));
@@ -186,7 +221,7 @@ async function post(payload){const res=await fetch(cfg.backendUrl,{method:'POST'
 function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
 function escapeAttr(v){return escapeHtml(v).replace(/`/g,'&#096;');}
 function cssEscape(v){return (window.CSS&&CSS.escape)?CSS.escape(v):String(v).replace(/([ #;?%&,.+*~\\':"!^$\[\]()=>|\/])/g,'\\$1');}
-function humanError(code){const map={GEMINI_API_KEY_NOT_CONFIGURED:'⚠️ GEMINI_API_KEY belum ditemui di Script Properties.',WHOLE_BOOK_AI_NOT_YET_ENABLED:'📚 Seluruh buku belum dibuka untuk pilot 002.5.',QUESTIONS_ALREADY_EXIST:'⚠️ Draf ini sudah mempunyai soalan. Gunakan Preview yang sedia ada.',GEMINI_HTTP_ERROR:'⚠️ Gemini tidak dapat menjana soalan. Semak Execution log Apps Script.',TEACHER_VERIFICATION_REQUIRED:'⚠️ Semua soalan Pendidikan Islam/Bahasa Arab mesti disahkan guru sebelum diterbitkan.',NO_QUESTIONS:'⚠️ Kuiz belum mempunyai soalan.'};return map[code]||'⚠️ '+(code||'Proses belum berjaya. Cuba lagi.');}
+function humanError(code){const map={GEMINI_API_KEY_NOT_CONFIGURED:'⚠️ GEMINI_API_KEY belum ditemui di Script Properties.',WHOLE_BOOK_AI_NOT_YET_ENABLED:'📚 Seluruh buku belum dibuka untuk pilot 002.5.',QUESTIONS_ALREADY_EXIST:'⚠️ Draf ini sudah mempunyai soalan. Gunakan Preview yang sedia ada.',GEMINI_HTTP_ERROR:'⚠️ Gemini tidak dapat menjana soalan. Semak Execution log Apps Script.',TEACHER_VERIFICATION_REQUIRED:'⚠️ Semua soalan Pendidikan Islam/Bahasa Arab mesti disahkan guru sebelum diterbitkan.',NO_QUESTIONS:'⚠️ Kuiz belum mempunyai soalan.',QUESTION_NOT_FOUND:'⚠️ Ada soalan yang tidak ditemui dalam database. Refresh draf dan cuba lagi.',VERIFY_FAILED:'⚠️ Proses pengesahan soalan terganggu. Cuba lagi.',PUBLISH_FAILED:'⚠️ Kuiz belum dapat diterbitkan. Cuba lagi.'};return map[code]||'⚠️ '+(code||'Proses belum berjaya. Cuba lagi.');}
 
 applyTeacherProfile();loadConfig();
 if(urlQuizId){setTimeout(()=>resumeExistingQuiz(urlQuizId),700);}
