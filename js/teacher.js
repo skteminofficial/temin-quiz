@@ -27,6 +27,8 @@ const pilotResumeText=document.getElementById('pilotResumeText');
 const pilotResumeBtn=document.getElementById('pilotResumeBtn');
 
 let currentSource=null;
+let sourceLoadPromise=null;
+let sourceLoadToken=0;
 let teacherProfile=readTeacherProfile();
 let activeQuiz=null;
 let activeQuestions=[];
@@ -59,11 +61,29 @@ async function loadConfig(){
   catch(err){msg.textContent='⚠️ Senarai sistem gagal dimuatkan. Refresh halaman.';}
 }
 async function loadCurriculumSource(){
+  const token=++sourceLoadToken;
   currentSource=null;sourceDetails.classList.add('hidden');sourceToggle.classList.add('hidden');sourceToggle.textContent='Lihat sumber';
-  if(!subject.value||!year.value){setSourceState('idle','Pilih Subjek + Tahun dahulu.');return;}
+  if(!subject.value||!year.value){setSourceState('idle','Pilih Subjek + Tahun dahulu.');return null;}
   setSourceState('loading','Mengesan Buku Teks & DSKP rasmi...');
-  try{const res=await fetch(cfg.backendUrl+'?action=curriculumSource&year='+encodeURIComponent(year.value)+'&subject='+encodeURIComponent(subject.value));const data=await res.json();if(!data.ok)throw new Error(data.error||'SOURCE_NOT_FOUND');currentSource=data;setSourceState('success','Sumber rasmi dikesan ✓');textbookLink.href=data.textbookUrl||'#';dskpLink.href=data.dskpUrl||'#';textbookLink.classList.toggle('disabled-link',!data.textbookUrl);dskpLink.classList.toggle('disabled-link',!data.dskpUrl);sourceToggle.classList.remove('hidden');}
-  catch(err){setSourceState('error','Sumber rasmi belum ditemui.');}
+  const url=cfg.backendUrl+'?action=curriculumSource&year='+encodeURIComponent(year.value)+'&subject='+encodeURIComponent(subject.value)+'&_='+Date.now();
+  sourceLoadPromise=(async()=>{
+    try{
+      const res=await fetchWithTimeout(url,20000);
+      const data=await res.json();
+      if(token!==sourceLoadToken)return null;
+      if(!data.ok)throw new Error(data.error||'SOURCE_NOT_FOUND');
+      currentSource=data;
+      setSourceState('success','Sumber rasmi dikesan ✓');
+      textbookLink.href=data.textbookUrl||'#';dskpLink.href=data.dskpUrl||'#';
+      textbookLink.classList.toggle('disabled-link',!data.textbookUrl);dskpLink.classList.toggle('disabled-link',!data.dskpUrl);
+      sourceToggle.classList.remove('hidden');
+      return data;
+    }catch(err){
+      if(token===sourceLoadToken){currentSource=null;setSourceState('error','Sumber rasmi gagal dikesan. Klik JANA KUIZ untuk cuba semula.');}
+      console.error('Curriculum source:',err);return null;
+    }finally{if(token===sourceLoadToken)sourceLoadPromise=null;}
+  })();
+  return sourceLoadPromise;
 }
 function setSourceState(state,text){sourceStatus.className='source-status source-'+state;sourceStatusText.textContent=text;}
 async function selectionChanged(){await Promise.all([loadCurriculumSource(),loadTopics()]);}
@@ -78,7 +98,15 @@ function syncTopicUI(){const whole=topic.value==='__ALL__',other=topic.value==='
 form?.addEventListener('submit',async e=>{
   e.preventDefault();
   if(!teacherProfile?.teacherId){document.getElementById('teacherProfileCard').classList.remove('hidden');document.getElementById('teacherName').focus();msg.textContent='Simpan profil guru dahulu.';return;}
-  if(!currentSource?.ok){msg.textContent='Tunggu sehingga sumber rasmi dikesan.';return;}
+  if(!subject.value||!year.value){msg.textContent='Pilih Subjek dan Tahun dahulu.';return;}
+  if(!currentSource?.ok){
+    const button=form.querySelector('.generate');
+    button.disabled=true;button.textContent='🔎 MENGESAN SUMBER...';
+    msg.textContent='TEMIN sedang mengesan sumber rasmi. Jika sambungan lambat, sistem akan cuba semula secara automatik.';
+    const detected=sourceLoadPromise ? await sourceLoadPromise : await loadCurriculumSource();
+    button.disabled=false;button.textContent='✨ JANA KUIZ';
+    if(!detected?.ok){msg.textContent='⚠️ Sumber rasmi tidak dapat dikesan. Semak sambungan backend dan cuba lagi.';return;}
+  }
   const wholeBook=topic.value==='__ALL__',manual=topic.value==='__OTHER__',selectedTopic=manual?manualTopic.value.trim():topic.value;
   if(wholeBook){msg.textContent='📚 Seluruh buku akan diaktifkan selepas pilot satu topik lulus.';return;}
   if(!subject.value||!year.value||!selectedTopic){msg.textContent='Lengkapkan Subjek, Tahun dan Topik dahulu.';return;}
@@ -150,6 +178,10 @@ publishQuizBtn?.addEventListener('click',async()=>{
 document.querySelectorAll('.shortcut-grid button').forEach(b=>b.addEventListener('click',()=>alert('Modul ini akan diaktifkan selepas Quiz Engine disambungkan.')));
 function readTeacherProfile(){try{return JSON.parse(localStorage.getItem('teminTeacherProfile')||'null')}catch(e){return null}}
 function applyTeacherProfile(){const card=document.getElementById('teacherProfileCard'),chip=document.getElementById('teacherChip');if(teacherProfile?.teacherId){card.classList.add('hidden');chip.textContent='👩‍🏫 '+teacherProfile.teacherName;chip.classList.remove('hidden');}else{card.classList.remove('hidden');chip.classList.add('hidden');}}
+async function fetchWithTimeout(url,ms=20000){
+  const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),ms);
+  try{return await fetch(url,{signal:controller.signal,cache:'no-store'});}finally{clearTimeout(timer);}
+}
 async function post(payload){const res=await fetch(cfg.backendUrl,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});return res.json();}
 function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
 function escapeAttr(v){return escapeHtml(v).replace(/`/g,'&#096;');}
