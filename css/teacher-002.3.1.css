@@ -1,5 +1,5 @@
 
-/* Build 002.3.1 — Curriculum Source + Teacher Profile */
+/* Build 002.3.1 â€” Curriculum Source + Teacher Profile */
 .teacher-actions{display:flex;align-items:center;gap:9px}
 .teacher-chip{display:inline-flex;align-items:center;padding:9px 12px;border-radius:999px;background:#ebe8ff;color:var(--purple);font-size:.78rem;font-weight:900}
 .profile-card{margin-top:18px;background:linear-gradient(135deg,#fff,#f4f1ff);border:2px solid #ddd7ff;border-radius:25px;padding:22px;box-shadow:var(--shadow);display:grid;grid-template-columns:auto 1fr minmax(260px,360px);gap:18px;align-items:center}
