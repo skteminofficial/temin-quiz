@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ms">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Guru • TEMIN Kuiz</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/teacher-002.3.1.css"><link rel="stylesheet" href="css/teacher-002.4.css"></head>
+<title>Guru • TEMIN Kuiz</title><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/teacher-002.3.1.css"><link rel="stylesheet" href="css/teacher-002.4.css"><link rel="stylesheet" href="css/teacher-002.5.css"></head>
 <body>
 <main class="wrap dashboard">
 <nav class="topbar">
@@ -78,6 +78,16 @@
   </div>
 </form>
 <p id="teacherMessage" class="form-message center"></p>
+<div id="aiProgress" class="ai-progress hidden"><div class="ai-spinner"></div><div><b id="aiProgressTitle">TEMIN sedang menjana soalan...</b><small id="aiProgressText">Gemini sedang membina soalan dan menyimpannya sebagai Draf AI. Jangan tutup halaman ini.</small></div></div>
+<div id="pilotResume" class="pilot-card hidden"><b>🧪 Draf pilot dikesan</b><span id="pilotResumeText"></span><br><button type="button" id="pilotResumeBtn">SAMBUNG DRAF INI</button></div>
+
+</section>
+
+
+<section id="previewSection" class="preview-section hidden">
+  <div class="preview-head"><div><span class="badge">🧠 DRAF AI</span><h2>Preview & Edit</h2><p>Semak soalan sebelum diterbitkan kepada murid.</p><div id="previewMeta" class="preview-meta"></div></div></div>
+  <div id="questionList" class="question-list"></div>
+  <div class="publish-bar"><div><b id="verifyCount">0/0 soalan disahkan</b><br><small>Simpan perubahan dan sahkan soalan yang telah disemak.</small></div><button id="publishQuizBtn" class="publish-btn" type="button">✅ SAHKAN & TERBITKAN</button></div>
 </section>
 
 <section class="shortcut-grid">
